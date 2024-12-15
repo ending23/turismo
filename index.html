@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las Coloradas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>Bienvenido a Las Coloradas</h1>
+        <p>Explora el maravilloso lugar turístico de Las Coloradas, Yucatán.</p>
+        
+        <?php 
+        session_start();
+        if (isset($_SESSION['role'])): ?>
+            <?php if ($_SESSION['role'] === 'admin'): ?>
+                <a href="lugares.php">Administrar Lugares</a>
+            <?php endif; ?>
+            <a href="logout.php">Cerrar sesión</a>
+        <?php else: ?>
+            <a href="login.php" class="btn">Iniciar Sesión</a>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
