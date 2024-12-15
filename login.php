@@ -1,4 +1,5 @@
 <?php
+// login.php - Script de inicio de sesión
 session_start();
 include 'config.php';
 
@@ -6,12 +7,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Verificar el usuario en la base de datos
+    // Obtener el usuario de la base de datos
     $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
+    // Verificar la contraseña usando password_verify()
     if ($user && password_verify($password, $user['password'])) {
+        // Guardar la sesión
         $_SESSION['role'] = $user['role'];
         $_SESSION['username'] = $user['username'];
         header('Location: index.php');
@@ -28,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="login-container">
