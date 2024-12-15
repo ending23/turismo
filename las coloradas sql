@@ -1,0 +1,25 @@
+-- Crear la base de datos
+CREATE DATABASE IF NOT EXISTS las_coloradas;
+
+-- Seleccionar la base de datos
+USE las_coloradas;
+
+-- Crear tabla de usuarios
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'cliente') NOT NULL
+);
+
+-- Crear tabla de lugares (grupos) turísticos
+CREATE TABLE IF NOT EXISTS grupos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT
+);
+
+-- Insertar algunos usuarios de ejemplo
+INSERT INTO usuarios (username, password, role) VALUES
+('admin1', 'adminpassword', 'admin'),
+('cliente1', 'clientpassword', 'cliente');
