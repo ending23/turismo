@@ -1,6 +1,13 @@
 <?php
-// Conectar a la base de datos
+// gestionar_lugares.php - Código para gestionar lugares turísticos
+session_start();
 include 'config.php';
+
+// Verificar que el usuario es admin
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header('Location: login.php');
+    exit;
+}
 
 // Si se recibe una acción para eliminar
 if (isset($_GET['action']) && $_GET['action'] == 'eliminar' && isset($_GET['id'])) {
@@ -50,52 +57,3 @@ if (isset($_GET['action']) && $_GET['action'] == 'editar' && isset($_GET['id']))
     $lugar = $stmt->fetch();
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Lugares</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Gestionar Lugares Turísticos</h1>
-
-    <!-- Formulario para agregar o editar un lugar -->
-    <h2><?php echo $lugar ? 'Editar Lugar' : 'Agregar Lugar'; ?></h2>
-    <form method="post">
-        <?php if ($lugar): ?>
-            <input type="hidden" name="id" value="<?php echo $lugar['id']; ?>">
-        <?php endif; ?>
-        <label for="nombre">Nombre del Lugar:</label>
-        <input type="text" id="nombre" name="nombre" value="<?php echo $lugar ? htmlspecialchars($lugar['nombre']) : ''; ?>" required>
-
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion" required><?php echo $lugar ? htmlspecialchars($lugar['descripcion']) : ''; ?></textarea>
-
-        <button type="submit"><?php echo $lugar ? 'Actualizar' : 'Agregar'; ?></button>
-    </form>
-
-    <h2>Lista de Lugares</h2>
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-        </tr>
-        <?php foreach ($grupos as $grupo): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($grupo['nombre']); ?></td>
-                <td><?php echo htmlspecialchars($grupo['descripcion']); ?></td>
-                <td>
-                    <a href="gestionar_lugares.php?action=editar&id=<?php echo $grupo['id']; ?>">Editar</a> |
-                    <a href="gestionar_lugares.php?action=eliminar&id=<?php echo $grupo['id']; ?>" onclick="return confirm('¿Estás seguro de que quieres eliminar este lugar?')">Eliminar</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-
-    <a href="index.php">Volver a la página principal</a>
-</body>
-</html>
